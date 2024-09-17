@@ -1542,7 +1542,6 @@ checksum = "3a6c9af12842a67734c9a2e355436e5d03b22383ed60cf13cd0c18fbfe3dcbcf"
 dependencies = [
  "async-trait",
  "axum-core 0.4.3",
- "axum-macros",
  "base64 0.21.7",
  "bytes",
  "futures-util",
@@ -1631,18 +1630,6 @@ dependencies = [
  "tower-layer",
  "tower-service",
  "tracing",
-]
-
-[[package]]
-name = "axum-macros"
-version = "0.4.1"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "00c055ee2d014ae5981ce1016374e8213682aa14d9bf40e48ab48b5f3ef20eaa"
-dependencies = [
- "heck 0.4.1",
- "proc-macro2 1.0.87",
- "quote 1.0.35",
- "syn 2.0.79",
 ]
 
 [[package]]
@@ -1775,7 +1762,7 @@ checksum = "b10cf871f3ff2ce56432fddc2615ac7acc3aa22ca321f8fea800846fbb32f188"
 dependencies = [
  "async-trait",
  "futures-util",
- "parking_lot 0.12.1",
+ "parking_lot 0.12.3",
  "tokio",
 ]
 
@@ -2124,9 +2111,9 @@ dependencies = [
 
 [[package]]
 name = "bnum"
-version = "0.12.0"
+version = "0.11.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "50202def95bf36cb7d1d7a7962cea1c36a3f8ad42425e5d2b71d7acb8041b5b8"
+checksum = "3e31ea183f6ee62ac8b8a8cf7feddd766317adfb13ff469de57ce033efd6a790"
 
 [[package]]
 name = "brotli"
@@ -2232,9 +2219,9 @@ checksum = "1fd0f2584146f6f2ef48085050886acf353beff7305ebd1ae69500e27c67f64b"
 
 [[package]]
 name = "bytes"
-version = "1.5.0"
+version = "1.7.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "a2bd12c1caf447e69cd4528f47f94d203fd2582878ecb9e9465484c4148a8223"
+checksum = "8318a53db07bb3f8dca91a600466bdb3f2eaadeedfdbcf02e1accbad9271ba50"
 dependencies = [
  "serde",
 ]
@@ -2744,7 +2731,7 @@ dependencies = [
  "mysten-metrics",
  "mysten-network",
  "nom",
- "parking_lot 0.12.1",
+ "parking_lot 0.12.3",
  "prometheus",
  "prost 0.13.1",
  "quinn-proto",
@@ -3123,7 +3110,7 @@ dependencies = [
  "crossterm_winapi",
  "libc",
  "mio",
- "parking_lot 0.12.1",
+ "parking_lot 0.12.3",
  "signal-hook",
  "signal-hook-mio",
  "winapi",
@@ -5318,7 +5305,7 @@ dependencies = [
  "futures-timer",
  "no-std-compat",
  "nonzero_ext",
- "parking_lot 0.12.1",
+ "parking_lot 0.12.3",
  "quanta",
  "rand 0.8.5",
  "smallvec",
@@ -6373,7 +6360,7 @@ dependencies = [
  "globset",
  "hyper 0.14.26",
  "jsonrpsee-types",
- "parking_lot 0.12.1",
+ "parking_lot 0.12.3",
  "rand 0.8.5",
  "rustc-hash 1.1.0",
  "serde",
@@ -6945,6 +6932,15 @@ dependencies = [
 ]
 
 [[package]]
+name = "memmap2"
+version = "0.7.1"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "f49388d20533534cd19360ad3d6a7dadc885944aa802ba3995040c5ec11288c6"
+dependencies = [
+ "libc",
+]
+
+[[package]]
 name = "memoffset"
 version = "0.6.5"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -7021,6 +7017,16 @@ dependencies = [
 ]
 
 [[package]]
+name = "minibytes"
+version = "0.1.0"
+source = "git+https://github.com/andll/tidehunter.git?rev=bf7e47eba2d8b7b26962d8a3e5a5fef9e11558e2#bf7e47eba2d8b7b26962d8a3e5a5fef9e11558e2"
+dependencies = [
+ "bytes",
+ "memmap2 0.7.1",
+ "serde",
+]
+
+[[package]]
 name = "minimal-lexical"
 version = "0.2.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -7084,7 +7090,7 @@ dependencies = [
  "crossbeam-epoch",
  "crossbeam-utils",
  "once_cell",
- "parking_lot 0.12.1",
+ "parking_lot 0.12.3",
  "rustc_version",
  "skeptic",
  "smallvec",
@@ -7987,7 +7993,7 @@ dependencies = [
  "fastcrypto",
  "futures",
  "mysten-metrics",
- "parking_lot 0.12.1",
+ "parking_lot 0.12.3",
  "prometheus",
  "reqwest 0.12.5",
  "snap",
@@ -8006,7 +8012,7 @@ dependencies = [
  "dashmap",
  "futures",
  "once_cell",
- "parking_lot 0.12.1",
+ "parking_lot 0.12.3",
  "prometheus",
  "prometheus-closure-metric",
  "scopeguard",
@@ -8072,7 +8078,7 @@ dependencies = [
  "indexmap 2.2.6",
  "mysten-util-mem-derive",
  "once_cell",
- "parking_lot 0.12.1",
+ "parking_lot 0.12.3",
  "roaring",
  "smallvec",
 ]
@@ -8100,7 +8106,7 @@ checksum = "40a3eb6b7c682b65d1f631ec3176829d72ab450b3aacdd3f719bf220822e59ac"
 dependencies = [
  "libc",
  "once_cell",
- "parking_lot 0.12.1",
+ "parking_lot 0.12.3",
  "thiserror",
  "widestring",
  "winapi",
@@ -8194,7 +8200,7 @@ dependencies = [
  "narwhal-crypto",
  "narwhal-test-utils",
  "narwhal-types",
- "parking_lot 0.12.1",
+ "parking_lot 0.12.3",
  "prometheus",
  "quinn-proto",
  "rand 0.8.5",
@@ -8282,7 +8288,7 @@ dependencies = [
  "narwhal-types",
  "narwhal-worker",
  "once_cell",
- "parking_lot 0.12.1",
+ "parking_lot 0.12.3",
  "prometheus",
  "proptest",
  "rand 0.8.5",
@@ -8313,7 +8319,7 @@ dependencies = [
  "narwhal-config",
  "narwhal-test-utils",
  "narwhal-types",
- "parking_lot 0.12.1",
+ "parking_lot 0.12.3",
  "prometheus",
  "sui-macros",
  "tap",
@@ -8899,7 +8905,7 @@ dependencies = [
  "hyper 1.4.1",
  "itertools 0.13.0",
  "md-5 0.10.6",
- "parking_lot 0.12.1",
+ "parking_lot 0.12.3",
  "percent-encoding",
  "quick-xml",
  "rand 0.8.5",
@@ -9305,9 +9311,9 @@ dependencies = [
 
 [[package]]
 name = "parking_lot"
-version = "0.12.1"
+version = "0.12.3"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "3742b2c103b9f06bc9fff0a37ff4912935851bee6d36f3c02bcc755bcfec228f"
+checksum = "f1bf18183cf54e8d6059647fc3063646a1801cf30896933ec2311622cc4b9a27"
 dependencies = [
  "lock_api",
  "parking_lot_core 0.9.9",
@@ -9856,7 +9862,7 @@ dependencies = [
  "log",
  "nix 0.26.4",
  "once_cell",
- "parking_lot 0.12.1",
+ "parking_lot 0.12.3",
  "smallvec",
  "symbolic-demangle",
  "tempfile",
@@ -10057,7 +10063,7 @@ dependencies = [
  "fnv",
  "lazy_static",
  "memchr",
- "parking_lot 0.12.1",
+ "parking_lot 0.12.3",
  "protobuf",
  "thiserror",
 ]
@@ -10525,7 +10531,7 @@ dependencies = [
  "libc",
  "mio",
  "num_cpus",
- "parking_lot 0.12.1",
+ "parking_lot 0.12.3",
  "pin-project-lite",
  "signal-hook-registry",
  "socket2 0.5.6",
@@ -11626,9 +11632,9 @@ checksum = "a3f0bf26fd526d2a95683cd0f87bf103b8539e2ca1ef48ce002d67aad59aa0b4"
 
 [[package]]
 name = "serde"
-version = "1.0.210"
+version = "1.0.208"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "c8e3592472072e6e22e0a54d5904d9febf8508f65fb8552499a1abc7d1078c3a"
+checksum = "cff085d2cb684faa248efb494c39b68e522822ac0de72ccf08109abde717cfb2"
 dependencies = [
  "serde_derive",
 ]
@@ -11675,9 +11681,9 @@ dependencies = [
 
 [[package]]
 name = "serde_derive"
-version = "1.0.210"
+version = "1.0.208"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "243902eda00fad750862fc144cea25caca5e20d615af0a81bee94ca738f1df1f"
+checksum = "24008e81ff7613ed8e5ba0cfaf24e2c2f1e5b8a0495711e44fcd4882fca62bcf"
 dependencies = [
  "proc-macro2 1.0.87",
  "quote 1.0.35",
@@ -11697,13 +11703,12 @@ dependencies = [
 
 [[package]]
 name = "serde_json"
-version = "1.0.128"
+version = "1.0.120"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "6ff5456707a1de34e7e37f2a6fd3d3f808c318259cbd01ab6377795054b483d8"
+checksum = "4e0d21c9a8cae1235ad58a00c11cb40d4b1e5c784f1ef2c537876ed6ffd8b7c5"
 dependencies = [
  "indexmap 2.2.6",
  "itoa",
- "memchr",
  "ryu",
  "serde",
 ]
@@ -12357,7 +12362,7 @@ checksum = "f91138e76242f575eb1d3b38b4f1362f10d3a43f47d182a5b359af488a02293b"
 dependencies = [
  "new_debug_unreachable",
  "once_cell",
- "parking_lot 0.12.1",
+ "parking_lot 0.12.3",
  "phf_shared 0.10.0",
  "precomputed-hash",
 ]
@@ -12596,7 +12601,7 @@ dependencies = [
  "move-vm-runtime",
  "move-vm-types",
  "mysten-metrics",
- "parking_lot 0.12.1",
+ "parking_lot 0.12.3",
  "serde",
  "sui-macros",
  "sui-move-natives-latest",
@@ -12632,7 +12637,7 @@ dependencies = [
  "move-vm-runtime-v0",
  "move-vm-types",
  "once_cell",
- "parking_lot 0.12.1",
+ "parking_lot 0.12.3",
  "serde",
  "sui-macros",
  "sui-move-natives-v0",
@@ -12659,7 +12664,7 @@ dependencies = [
  "move-vm-profiler",
  "move-vm-runtime-v1",
  "move-vm-types",
- "parking_lot 0.12.1",
+ "parking_lot 0.12.3",
  "serde",
  "sui-macros",
  "sui-move-natives-v1",
@@ -12686,7 +12691,7 @@ dependencies = [
  "move-vm-profiler",
  "move-vm-runtime-v2",
  "move-vm-types",
- "parking_lot 0.12.1",
+ "parking_lot 0.12.3",
  "serde",
  "sui-macros",
  "sui-move-natives-v2",
@@ -13132,7 +13137,7 @@ dependencies = [
  "num_cpus",
  "object_store",
  "once_cell",
- "parking_lot 0.12.1",
+ "parking_lot 0.12.3",
  "pprof",
  "pretty_assertions",
  "prometheus",
@@ -13262,7 +13267,6 @@ dependencies = [
  "telemetry-subscribers",
  "tempfile",
  "tokio",
- "tokio-stream",
  "tracing",
  "url",
 ]
@@ -13273,7 +13277,6 @@ version = "0.1.0"
 dependencies = [
  "anyhow",
  "async-trait",
- "axum 0.7.5",
  "backoff",
  "bcs",
  "bigdecimal",
@@ -13287,15 +13290,18 @@ dependencies = [
  "prometheus",
  "serde",
  "serde_yaml 0.8.26",
+ "sui-bridge",
  "sui-config",
  "sui-data-ingestion-core",
  "sui-indexer-builder",
  "sui-json-rpc-types",
  "sui-sdk",
+ "sui-test-transaction-builder",
  "sui-types",
  "tap",
  "telemetry-subscribers",
  "tempfile",
+ "test-cluster",
  "tokio",
  "tracing",
 ]
@@ -13347,7 +13353,6 @@ dependencies = [
  "sui-protocol-config",
  "sui-rest-api",
  "sui-sdk",
- "sui-sdk-types",
  "sui-simulator",
  "sui-storage",
  "sui-swarm",
@@ -13431,8 +13436,7 @@ dependencies = [
  "futures",
  "http 1.1.0",
  "mysten-metrics",
- "mysten-network",
- "parking_lot 0.12.1",
+ "parking_lot 0.12.3",
  "prometheus",
  "scopeguard",
  "serde",
@@ -13448,7 +13452,6 @@ dependencies = [
  "test-cluster",
  "thiserror",
  "tokio",
- "tonic 0.12.3",
  "tower",
  "tower-http",
  "tracing",
@@ -13693,7 +13696,6 @@ dependencies = [
  "ntest",
  "object_store",
  "prometheus",
- "rand 0.8.5",
  "rayon",
  "regex",
  "serde",
@@ -14204,7 +14206,6 @@ dependencies = [
  "bcs",
  "bin-version",
  "clap",
- "consensus-core",
  "fastcrypto",
  "fastcrypto-zkp",
  "futures",
@@ -14215,7 +14216,7 @@ dependencies = [
  "mysten-network",
  "mysten-service",
  "narwhal-network",
- "parking_lot 0.12.1",
+ "parking_lot 0.12.3",
  "prometheus",
  "reqwest 0.12.5",
  "serde",
@@ -14462,7 +14463,7 @@ dependencies = [
  "move-bytecode-utils",
  "move-core-types",
  "move-vm-config",
- "parking_lot 0.12.1",
+ "parking_lot 0.12.3",
  "prometheus",
  "rand 0.8.5",
  "regex",
@@ -14506,8 +14507,6 @@ dependencies = [
  "fastcrypto",
  "itertools 0.13.0",
  "mime",
- "move-binary-format",
- "move-core-types",
  "mysten-network",
  "openapiv3",
  "prometheus",
@@ -14639,7 +14638,8 @@ dependencies = [
 [[package]]
 name = "sui-sdk-types"
 version = "0.0.1"
-source = "git+https://github.com/MystenLabs/sui-rust-sdk.git?rev=31bd9da32a8057edc45da8f5e6a8f25b83919b93#31bd9da32a8057edc45da8f5e6a8f25b83919b93"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "08f0c33e0ed6354cc3c4a4646e89485af49e1525654672773db69abfd0bcc9bf"
 dependencies = [
  "base64ct",
  "bcs",
@@ -14653,7 +14653,7 @@ dependencies = [
  "serde_derive",
  "serde_json",
  "serde_with 3.9.0",
- "winnow 0.6.20",
+ "winnow 0.6.18",
 ]
 
 [[package]]
@@ -14868,7 +14868,7 @@ dependencies = [
  "num_enum 0.6.1",
  "object_store",
  "once_cell",
- "parking_lot 0.12.1",
+ "parking_lot 0.12.3",
  "percent-encoding",
  "pretty_assertions",
  "prometheus",
@@ -15006,7 +15006,6 @@ name = "sui-tls"
 version = "0.0.0"
 dependencies = [
  "anyhow",
- "arc-swap",
  "axum 0.7.5",
  "axum-server",
  "ed25519 1.5.3",
@@ -15190,7 +15189,7 @@ dependencies = [
  "num_enum 0.6.1",
  "once_cell",
  "p256",
- "parking_lot 0.12.1",
+ "parking_lot 0.12.3",
  "passkey-authenticator",
  "passkey-client",
  "passkey-types",
@@ -15433,7 +15432,7 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "26212dc7aeb75abb4cc84320a50dd482977089402f7b4043b454d6d79d8536e7"
 dependencies = [
  "debugid",
- "memmap2",
+ "memmap2 0.5.8",
  "stable_deref_trait",
  "uuid 1.2.2",
 ]
@@ -15687,6 +15686,7 @@ dependencies = [
  "move-binary-format",
  "prometheus",
  "rand 0.8.5",
+ "sui-bridge",
  "sui-config",
  "sui-core",
  "sui-framework",
@@ -15825,6 +15825,22 @@ dependencies = [
 ]
 
 [[package]]
+name = "tidehunter"
+version = "0.1.0"
+source = "git+https://github.com/andll/tidehunter.git?rev=bf7e47eba2d8b7b26962d8a3e5a5fef9e11558e2#bf7e47eba2d8b7b26962d8a3e5a5fef9e11558e2"
+dependencies = [
+ "bincode",
+ "bytes",
+ "crc32fast",
+ "memmap2 0.7.1",
+ "minibytes",
+ "parking_lot 0.12.3",
+ "prometheus",
+ "serde",
+ "smallvec",
+]
+
+[[package]]
 name = "time"
 version = "0.3.36"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -15921,7 +15937,7 @@ dependencies = [
  "libc",
  "mio",
  "num_cpus",
- "parking_lot 0.12.1",
+ "parking_lot 0.12.3",
  "pin-project-lite",
  "signal-hook-registry",
  "socket2 0.5.6",
@@ -15989,7 +16005,7 @@ dependencies = [
  "futures-channel",
  "futures-util",
  "log",
- "parking_lot 0.12.1",
+ "parking_lot 0.12.3",
  "percent-encoding",
  "phf",
  "pin-project-lite",
@@ -16228,7 +16244,7 @@ dependencies = [
  "serde",
  "serde_spanned",
  "toml_datetime 0.6.8",
- "winnow 0.6.20",
+ "winnow 0.6.18",
 ]
 
 [[package]]
@@ -16674,6 +16690,7 @@ dependencies = [
  "tap",
  "tempfile",
  "thiserror",
+ "tidehunter",
  "tokio",
  "tracing",
  "typed-store-derive",
@@ -17497,9 +17514,9 @@ dependencies = [
 
 [[package]]
 name = "winnow"
-version = "0.6.20"
+version = "0.6.18"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "36c1fec1a2bb5866f07c25f68c26e565c4c200aebb96d7e55710c19d3e8ac49b"
+checksum = "68a9bda4691f099d435ad181000724da8e5899daa10713c2d432552b9ccd3a6f"
 dependencies = [
  "memchr",
 ]
