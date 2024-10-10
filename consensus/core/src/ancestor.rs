@@ -173,7 +173,7 @@ impl AncestorStateManager {
         }
 
         let low_score_threshold =
-            (self.propagation_scores.high_score() * Self::EXCLUSION_THRESHOLD_PERCENTAGE) / 100;
+            (self.propagation_scores.highest_score() * Self::EXCLUSION_THRESHOLD_PERCENTAGE) / 100;
 
         match ancestor_info.state {
             // Check conditions to switch to EXCLUDE state
