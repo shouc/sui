@@ -4234,7 +4234,7 @@ mod quarantine {
         }
 
         /// Commit all data below the watermark.
-        pub(super) fn commit_with_batch(
+        fn commit_with_batch(
             &mut self,
             epoch_store: &AuthorityPerEpochStore,
             batch: &mut DBBatch,
