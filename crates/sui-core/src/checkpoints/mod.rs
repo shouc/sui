@@ -1083,11 +1083,24 @@ impl CheckpointBuilder {
                 contents_digest = ?contents.digest(),
                 "writing checkpoint",
             );
-            all_tx_digests.extend(contents.iter().map(|digests| digests.transaction));
 
-            self.output
-                .checkpoint_created(summary, contents, &self.epoch_store, &self.tables)
-                .await?;
+            if let Some(previously_computed_summary) = self
+                .tables
+                .locally_computed_checkpoints
+                .get(&summary.sequence_number)?
+            {
+                if previously_computed_summary != *summary {
+                    // Panic so that we don't send out an equivocating checkpoint sig.
+                    fatal!(
+                        "Checkpoint {} was previously built with a different result: {:?} vs {:?}",
+                        summary.sequence_number,
+                        previously_computed_summary,
+                        summary
+                    );
+                }
+            }
+
+            all_tx_digests.extend(contents.iter().map(|digests| digests.transaction));
 
             self.metrics
                 .transactions_included_in_checkpoint
@@ -1097,7 +1110,6 @@ impl CheckpointBuilder {
                 .last_constructed_checkpoint
                 .set(sequence_number as i64);
 
-            // TODO: quarantine
             batch.insert_batch(
                 &self.tables.checkpoint_content,
                 [(contents.digest(), contents)],
@@ -1110,6 +1122,13 @@ impl CheckpointBuilder {
         }
 
         batch.write()?;
+
+        // Send all checkpoint sigs to consensus.
+        for (summary, contents) in &new_checkpoints {
+            self.output
+                .checkpoint_created(summary, contents, &self.epoch_store, &self.tables)
+                .await?;
+        }
 
         for (local_checkpoint, _) in &new_checkpoints {
             if let Some(certified_checkpoint) = self
