@@ -1261,16 +1261,17 @@ impl SuiNode {
         sui_node_metrics: Arc<SuiNodeMetrics>,
         sui_tx_validator_metrics: Arc<SuiTxValidatorMetrics>,
     ) -> Result<ValidatorComponents> {
-        let (checkpoint_service, checkpoint_service_exit) = Self::start_checkpoint_service(
-            config,
-            consensus_adapter.clone(),
-            checkpoint_store,
-            epoch_store.clone(),
-            state.clone(),
-            state_sync_handle,
-            accumulator,
-            checkpoint_metrics.clone(),
-        );
+        let (checkpoint_service, checkpoint_service_exit, startup_sender) =
+            Self::start_checkpoint_service(
+                config,
+                consensus_adapter.clone(),
+                checkpoint_store,
+                epoch_store.clone(),
+                state.clone(),
+                state_sync_handle,
+                accumulator,
+                checkpoint_metrics.clone(),
+            );
 
         // create a new map that gets injected into both the consensus handler and the consensus adapter
         // the consensus handler will write values forwarded from consensus, and the consensus adapter
@@ -1331,6 +1332,11 @@ impl SuiNode {
             )
             .await;
 
+        info!("consensus manager started");
+        startup_sender
+            .send(())
+            .expect("Failed to send startup signal");
+
         if epoch_store.authenticator_state_enabled() {
             Self::start_jwk_updater(
                 config,
@@ -1362,7 +1368,11 @@ impl SuiNode {
         state_sync_handle: state_sync::Handle,
         accumulator: Weak<StateAccumulator>,
         checkpoint_metrics: Arc<CheckpointMetrics>,
-    ) -> (Arc<CheckpointService>, watch::Sender<()>) {
+    ) -> (
+        Arc<CheckpointService>,
+        watch::Sender<()>,
+        tokio::sync::oneshot::Sender<()>,
+    ) {
         let epoch_start_timestamp_ms = epoch_store.epoch_start_state().epoch_start_timestamp_ms();
         let epoch_duration_ms = epoch_store.epoch_start_state().epoch_duration_ms();
 

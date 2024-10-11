@@ -819,7 +819,9 @@ impl CheckpointBuilder {
         }
     }
 
-    async fn run(mut self) {
+    async fn run(mut self, startup_wait: tokio::sync::oneshot::Receiver<()>) {
+        info!("CheckpointBuilder waiting for startup signal");
+        startup_wait.await.ok();
         info!("Starting CheckpointBuilder");
         loop {
             // Check whether an exit signal has been received, if so we break the loop.
@@ -2123,7 +2125,11 @@ impl CheckpointService {
         metrics: Arc<CheckpointMetrics>,
         max_transactions_per_checkpoint: usize,
         max_checkpoint_size_bytes: usize,
-    ) -> (Arc<Self>, watch::Sender<()> /* The exit sender */) {
+    ) -> (
+        Arc<Self>,
+        watch::Sender<()>,                /* The exit sender */
+        tokio::sync::oneshot::Sender<()>, /* builder start-up sender */
+    ) {
         info!(
             "Starting checkpoint service with {max_transactions_per_checkpoint} max_transactions_per_checkpoint and {max_checkpoint_size_bytes} max_checkpoint_size_bytes"
         );
@@ -2148,7 +2154,9 @@ impl CheckpointService {
         );
 
         let epoch_store_clone = epoch_store.clone();
-        spawn_monitored_task!(epoch_store_clone.within_alive_epoch(builder.run()));
+        let (tx, rx) = tokio::sync::oneshot::channel();
+
+        spawn_monitored_task!(epoch_store_clone.within_alive_epoch(builder.run(rx)));
 
         let aggregator = CheckpointAggregator::new(
             checkpoint_store.clone(),
@@ -2174,7 +2182,7 @@ impl CheckpointService {
             last_signature_index,
             metrics,
         });
-        (service, exit_snd)
+        (service, exit_snd, tx)
     }
 
     #[cfg(test)]
@@ -2417,7 +2425,7 @@ mod tests {
             &epoch_store,
         ));
 
-        let (checkpoint_service, _exit) = CheckpointService::spawn(
+        let (checkpoint_service, _exit, startup) = CheckpointService::spawn(
             state.clone(),
             checkpoint_store,
             epoch_store.clone(),
@@ -2429,6 +2437,7 @@ mod tests {
             3,
             100_000,
         );
+        startup.send(()).unwrap();
 
         checkpoint_service
             .write_and_notify_checkpoint_for_testing(&epoch_store, p(0, vec![4], 0))
