@@ -45,7 +45,11 @@ pub fn checkpoint_service_for_testing(state: Arc<AuthorityState>) -> Arc<Checkpo
         3,
         100_000,
     );
-    startup.send(()).unwrap();
+    let (tx, rx) = tokio::sync::oneshot::channel();
+    startup.send(tx).unwrap();
+    tokio::task::spawn(async move {
+        rx.await.unwrap();
+    });
     checkpoint_service
 }
 
