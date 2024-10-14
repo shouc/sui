@@ -2071,7 +2071,10 @@ impl IndexerStore for PgIndexerStore {
             .metrics
             .checkpoint_db_commit_latency_event_indices
             .start_timer();
-        let chunks = chunk!(indices, self.config.parallel_chunk_size);
+        let event_indices_chunk_size = std::env::var("EVENT_INDICES_CHUNK_SIZE")
+            .map(|val| val.parse::<usize>().unwrap_or(200))
+            .unwrap_or(200);
+        let chunks = chunk!(indices, event_indices_chunk_size);
 
         let futures = chunks
             .into_iter()
@@ -2104,7 +2107,10 @@ impl IndexerStore for PgIndexerStore {
             .metrics
             .checkpoint_db_commit_latency_tx_indices
             .start_timer();
-        let chunks = chunk!(indices, self.config.parallel_chunk_size);
+        let tx_indices_chunk_size = std::env::var("TX_INDICES_CHUNK_SIZE")
+            .map(|val| val.parse::<usize>().unwrap_or(200))
+            .unwrap_or(200);
+        let chunks = chunk!(indices, tx_indices_chunk_size);
 
         let futures = chunks
             .into_iter()
