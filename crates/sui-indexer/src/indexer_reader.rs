@@ -1458,7 +1458,7 @@ impl IndexerReader {
 struct ConnectionAsObjectStore {
     inner: std::sync::Mutex<
         diesel_async::async_connection_wrapper::AsyncConnectionWrapper<
-            crate::database::Connection<'static>,
+            crate::database::Connection,
         >,
     >,
 }
@@ -1466,7 +1466,7 @@ struct ConnectionAsObjectStore {
 impl ConnectionAsObjectStore {
     async fn from_pool(
         pool: &ConnectionPool,
-    ) -> Result<Self, diesel_async::pooled_connection::PoolError> {
+    ) -> Result<Self, anyhow::Error> {
         let connection = std::sync::Mutex::new(pool.dedicated_connection().await?.into());
 
         Ok(Self { inner: connection })

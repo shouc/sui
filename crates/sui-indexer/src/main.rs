@@ -9,7 +9,8 @@ use sui_indexer::database::ConnectionPool;
 use sui_indexer::db::{check_db_migration_consistency, reset_database, run_migrations};
 use sui_indexer::indexer::Indexer;
 use sui_indexer::metrics::{
-    spawn_connection_pool_metric_collector, start_prometheus_server, IndexerMetrics,
+    // spawn_connection_pool_metric_collector, 
+    start_prometheus_server, IndexerMetrics,
 };
 use sui_indexer::restorer::formal_snapshot::IndexerFormalSnapshotRestorer;
 use sui_indexer::sql_backfill::run_sql_backfill;
@@ -34,7 +35,7 @@ async fn main() -> anyhow::Result<()> {
         opts.connection_pool_config.clone(),
     )
     .await?;
-    spawn_connection_pool_metric_collector(indexer_metrics.clone(), pool.clone());
+    // spawn_connection_pool_metric_collector(indexer_metrics.clone(), pool.clone());
 
     match opts.command {
         Command::Indexer {

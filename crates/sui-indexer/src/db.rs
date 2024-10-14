@@ -86,7 +86,7 @@ pub struct ConnectionConfig {
 /// existing readers fail over.
 /// We do however need to make sure that whenever we are deploying a new version of either reader or writer,
 /// we must first run migration scripts to ensure that there is not more local scripts than in the DB record.
-pub async fn check_db_migration_consistency(conn: &mut Connection<'_>) -> Result<(), IndexerError> {
+pub async fn check_db_migration_consistency(conn: &mut Connection) -> Result<(), IndexerError> {
     info!("Starting compatibility check");
     let migrations: Vec<Box<dyn Migration<Pg>>> = MIGRATIONS.migrations().map_err(|err| {
         IndexerError::DbMigrationError(format!(
@@ -103,7 +103,7 @@ pub async fn check_db_migration_consistency(conn: &mut Connection<'_>) -> Result
 }
 
 async fn check_db_migration_consistency_impl(
-    conn: &mut Connection<'_>,
+    conn: &mut Connection,
     local_migrations: Vec<MigrationVersion<'_>>,
 ) -> Result<(), IndexerError> {
     use diesel_async::RunQueryDsl;
@@ -142,7 +142,7 @@ pub mod setup_postgres {
     use diesel_async::RunQueryDsl;
     use tracing::info;
 
-    pub async fn reset_database(mut conn: Connection<'static>) -> Result<(), anyhow::Error> {
+    pub async fn reset_database(mut conn: Connection) -> Result<(), anyhow::Error> {
         info!("Resetting PG database ...");
 
         let drop_all_tables = "
@@ -196,7 +196,7 @@ pub mod setup_postgres {
         Ok(())
     }
 
-    pub async fn run_migrations(conn: Connection<'static>) -> Result<(), anyhow::Error> {
+    pub async fn run_migrations(conn: Connection) -> Result<(), anyhow::Error> {
         conn.run_pending_migrations(MIGRATIONS)
             .await
             .map_err(|e| anyhow!("Failed to run migrations {e}"))?;

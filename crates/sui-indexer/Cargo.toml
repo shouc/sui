@@ -13,13 +13,14 @@ async-trait.workspace = true
 axum.workspace = true
 backoff.workspace = true
 bb8 = "0.8.5"
+deadpool = "0.12.1"
 bcs.workspace = true
 bytes.workspace = true
 chrono.workspace = true
 clap = { workspace = true, features = ["env"] }
 csv.workspace = true
 diesel = { workspace = true, features = ["chrono", "serde_json"] }
-diesel-async = { workspace = true, features = ["bb8", "postgres", "async-connection-wrapper"] }
+diesel-async = { workspace = true, features = ["bb8", "deadpool", "postgres", "async-connection-wrapper"] }
 futures.workspace = true
 hex.workspace = true
 indicatif.workspace = true

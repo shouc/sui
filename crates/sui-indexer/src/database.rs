@@ -3,12 +3,19 @@
 
 use std::sync::Arc;
 
+use deadpool::managed::BuildError;
 use diesel::prelude::ConnectionError;
-use diesel_async::pooled_connection::bb8::Pool;
-use diesel_async::pooled_connection::bb8::PooledConnection;
-use diesel_async::pooled_connection::bb8::RunError;
+// use diesel_async::pooled_connection::bb8::Pool;
+// use diesel_async::pooled_connection::bb8::PooledConnection;
+// use diesel_async::pooled_connection::bb8::RunError;
+
+
+use diesel_async::pooled_connection::deadpool::Pool;
+// use diesel_async::pooled_connection::deadpool::PooledConnection as DeadpoolPooledConnection;
+// use diesel_async::pooled_connection::deadpool::Run
+
 use diesel_async::pooled_connection::AsyncDieselConnectionManager;
-use diesel_async::pooled_connection::PoolError;
+// use diesel_async::pooled_connection::PoolError;
 use diesel_async::RunQueryDsl;
 use diesel_async::{AsyncConnection, AsyncPgConnection};
 use futures::FutureExt;
@@ -17,14 +24,14 @@ use url::Url;
 use crate::db::ConnectionConfig;
 use crate::db::ConnectionPoolConfig;
 
-#[derive(Clone, Debug)]
+#[derive(Clone)]
 pub struct ConnectionPool {
     database_url: Arc<Url>,
     pool: Pool<AsyncPgConnection>,
 }
 
 impl ConnectionPool {
-    pub async fn new(database_url: Url, config: ConnectionPoolConfig) -> Result<Self, PoolError> {
+    pub async fn new(database_url: Url, config: ConnectionPoolConfig) -> Result<Self, BuildError> {
         let database_url = Arc::new(database_url);
         let connection_config = config.connection_config();
         let mut manager_config = diesel_async::pooled_connection::ManagerConfig::default();
@@ -33,17 +40,18 @@ impl ConnectionPool {
         let manager =
             AsyncDieselConnectionManager::new_with_config(database_url.as_str(), manager_config);
 
-        Pool::builder()
-            .max_size(config.pool_size)
-            .connection_timeout(config.connection_timeout)
-            .build(manager)
-            .await
+        Pool::builder(manager)
+            .max_size(config.pool_size as usize)
+            .build()
             .map(|pool| Self { database_url, pool })
     }
 
     /// Retrieves a connection from the pool.
-    pub async fn get(&self) -> Result<Connection<'_>, RunError> {
-        self.pool.get().await.map(Connection::PooledConnection)
+    pub async fn get(&self) -> Result<Connection, anyhow::Error> {
+        self.pool.
+            get()
+            .await
+            .map(Connection::PooledConnection).map_err(Into::into)
     }
 
     /// Get a new dedicated connection that will not be managed by the pool.
@@ -52,17 +60,17 @@ impl ConnectionPool {
     ///
     /// This method allows reusing the manager's configuration but otherwise
     /// bypassing the pool
-    pub async fn dedicated_connection(&self) -> Result<Connection<'static>, PoolError> {
-        self.pool
-            .dedicated_connection()
+    pub async fn dedicated_connection(&self) -> Result<Connection, anyhow::Error> {
+        self.pool.
+            get()
             .await
-            .map(Connection::Dedicated)
+            .map(Connection::Dedicated).map_err(Into::into)
     }
 
-    /// Returns information about the current state of the pool.
-    pub fn state(&self) -> bb8::State {
-        self.pool.state()
-    }
+    // /// Returns information about the current state of the pool.
+    // pub fn state(&self) -> bb8::State {
+    //     self.pool.state()
+    // }
 
     /// Returns the database url that this pool is configured with
     pub fn url(&self) -> &Url {
@@ -70,16 +78,18 @@ impl ConnectionPool {
     }
 }
 
-pub enum Connection<'a> {
-    PooledConnection(PooledConnection<'a, AsyncPgConnection>),
-    Dedicated(AsyncPgConnection),
+pub enum Connection {
+    PooledConnection(deadpool::managed::Object<AsyncDieselConnectionManager<AsyncPgConnection>>),
+    Dedicated(deadpool::managed::Object<AsyncDieselConnectionManager<AsyncPgConnection>>),
 }
 
-impl Connection<'static> {
-    pub async fn dedicated(database_url: &Url) -> Result<Self, ConnectionError> {
-        AsyncPgConnection::establish(database_url.as_str())
-            .await
-            .map(Connection::Dedicated)
+impl Connection {
+    pub async fn dedicated(database_url: &Url) -> Result<Self, anyhow::Error> {
+        // AsyncPgConnection::establish(database_url.as_str())
+        //     .await
+        //     .map(Connection::Dedicated)
+        //     .map_err(Into::into)
+        anyhow::bail!("dedicated connection not implemented")
     }
 
     /// Run the provided Migrations
@@ -106,7 +116,7 @@ impl Connection<'static> {
     }
 }
 
-impl<'a> std::ops::Deref for Connection<'a> {
+impl std::ops::Deref for Connection {
     type Target = AsyncPgConnection;
 
     fn deref(&self) -> &Self::Target {
@@ -117,7 +127,7 @@ impl<'a> std::ops::Deref for Connection<'a> {
     }
 }
 
-impl<'a> std::ops::DerefMut for Connection<'a> {
+impl std::ops::DerefMut for Connection {
     fn deref_mut(&mut self) -> &mut AsyncPgConnection {
         match self {
             Connection::PooledConnection(pooled) => pooled.deref_mut(),

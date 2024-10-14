@@ -807,20 +807,20 @@ impl IndexerMetrics {
     }
 }
 
-pub fn spawn_connection_pool_metric_collector(
-    metrics: IndexerMetrics,
-    connection_pool: crate::database::ConnectionPool,
-) {
-    tokio::spawn(async move {
-        loop {
-            let cp_state = connection_pool.state();
-            tracing::debug!(
-                connection_pool_size =% cp_state.connections,
-                idle_connections =% cp_state.idle_connections,
-            );
-            metrics.db_conn_pool_size.set(cp_state.connections as i64);
-            metrics.idle_db_conn.set(cp_state.idle_connections as i64);
-            tokio::time::sleep(tokio::time::Duration::from_secs(60)).await;
-        }
-    });
-}
+// pub fn spawn_connection_pool_metric_collector(
+//     metrics: IndexerMetrics,
+//     connection_pool: crate::database::ConnectionPool,
+// ) {
+//     tokio::spawn(async move {
+//         loop {
+//             let cp_state = connection_pool.state();
+//             tracing::debug!(
+//                 connection_pool_size =% cp_state.connections,
+//                 idle_connections =% cp_state.idle_connections,
+//             );
+//             metrics.db_conn_pool_size.set(cp_state.connections as i64);
+//             metrics.idle_db_conn.set(cp_state.idle_connections as i64);
+//             tokio::time::sleep(tokio::time::Duration::from_secs(60)).await;
+//         }
+//     });
+// }
