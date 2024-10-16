@@ -1,11 +1,11 @@
 // Copyright (c) Mysten Labs, Inc.
 // SPDX-License-Identifier: Apache-2.0
-use std::sync::Arc;
 
 use diesel::ExpressionMethods;
 use diesel::QueryDsl;
 use diesel_async::RunQueryDsl;
 use simulacrum::Simulacrum;
+use std::sync::Arc;
 use sui_indexer::errors::IndexerError;
 use sui_indexer::models::{
     objects::StoredObject, objects::StoredObjectSnapshot, transactions::StoredTransaction,
