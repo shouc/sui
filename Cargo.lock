@@ -13767,6 +13767,7 @@ dependencies = [
  "sui-sdk",
  "sui-snapshot",
  "sui-storage",
+ "sui-swarm-config",
  "sui-test-transaction-builder",
  "sui-transaction-builder",
  "sui-types",
