@@ -1456,7 +1456,7 @@ impl PgIndexerStore {
         transaction_with_retry(&self.pool, PG_DB_COMMIT_SLEEP_DURATION, |conn| {
             async {
                 diesel::update(watermarks::table)
-                    .filter(watermarks::entity.eq(table.as_ref()))
+                    .filter(watermarks::pipeline.eq(table.as_ref()))
                     .filter(
                         watermarks::pruner_hi
                             .lt(latest_pruned as i64)
@@ -1517,7 +1517,7 @@ impl PgIndexerStore {
         read_with_retry(&self.pool, PG_DB_COMMIT_SLEEP_DURATION, |conn| {
             async {
                 let stored = watermarks::table
-                    .filter(watermarks::entity.eq(table.as_ref()))
+                    .filter(watermarks::pipeline.eq(table.as_ref()))
                     .first::<StoredWatermark>(conn)
                     .await
                     .map_err(Into::into)
