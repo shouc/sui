@@ -101,6 +101,8 @@ impl<T> CommonHandler<T> {
                 Some(None) => break, // Stream has ended
                 None => {}           // No new data tuple available right now
             }
+            let unprocessed_size = std::mem::size_of_val(&unprocessed);
+            tracing::info!("Memory size of unprocessed: {} bytes", unprocessed_size);
 
             // Process unprocessed checkpoints, even no new checkpoints from stream
             let checkpoint_lag_limiter = self.handler.get_max_committable_checkpoint().await?;
